@@ -691,10 +691,15 @@
         }
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert){
-
+        
         XLFormSectionDescriptor * multivaluedFormSection = [self.form formSectionAtIndex:indexPath.section];
         if (multivaluedFormSection.sectionInsertMode == XLFormSectionInsertModeButton && multivaluedFormSection.sectionOptions & XLFormSectionOptionCanInsert){
-            [self multivaluedInsertButtonTapped:multivaluedFormSection.multivaluedAddButton];
+            //[self multivaluedInsertButtonTapped:multivaluedFormSection.multivaluedAddButton];
+            XLFormRowDescriptor * row = [self.form formRowAtIndex:indexPath];
+            if (row.isDisabled) {
+                return;
+            }
+            [self didSelectFormRow:row];
         }
         else{
             XLFormRowDescriptor * formRowDescriptor = [self formRowFormMultivaluedFormSection:multivaluedFormSection];
