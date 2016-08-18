@@ -126,7 +126,15 @@
                 NSString *folderName = [components firstObject];
                 NSString *bundlePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:folderName];
                 //bundle = [NSBundle bundleWithPath:bundlePath];
+                //NSLog(@"%@", cellResource);
+                //NSLog(@"%@", folderName);
+                NSLog(@"test test test ----- *****");
+                NSString *test = [NSString stringWithFormat:(@"GathererSDK.framework/%@", cellClass)];
+                bundle = [NSBundle bundleForClass:NSClassFromString(test)];
+                NSLog(@"%@", bundle);
                 bundle = [NSBundle bundleWithIdentifier:@"com.gathererapp.GathererSDK"];
+                NSLog(@"%@", cellClass);
+                NSLog(@"%@", bundle);
             } else {
                 bundle = [NSBundle bundleForClass:NSClassFromString(cellClass)];
                 cellResource = cellClassString;
