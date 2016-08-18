@@ -59,6 +59,9 @@ typedef void(^XLOnChangeBlock)(id __nullable oldValue,id __nullable newValue,XLF
 @property (nonatomic, readonly, nonnull) NSMutableDictionary * cellConfigIfDisabled;
 @property (nonatomic, readonly, nonnull) NSMutableDictionary * cellConfigAtConfigure;
 
+@property (nonatomic, nullable) NSMutableDictionary * cellAttributes;
+
+
 @property (nonnull) id disabled;
 -(BOOL)isDisabled;
 @property (nonnull) id hidden;

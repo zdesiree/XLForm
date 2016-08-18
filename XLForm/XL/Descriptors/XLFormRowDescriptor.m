@@ -64,6 +64,7 @@
 @synthesize hidePredicateCache = _hidePredicateCache;
 @synthesize disablePredicateCache = _disablePredicateCache;
 @synthesize cellConfig = _cellConfig;
+@synthesize cellAttributes = _cellAttributes;
 @synthesize cellConfigIfDisabled = _cellConfigIfDisabled;
 @synthesize cellConfigAtConfigure = _cellConfigAtConfigure;
 
@@ -85,6 +86,7 @@
         _cellStyle = [rowType isEqualToString:XLFormRowDescriptorTypeButton] ? UITableViewCellStyleDefault : UITableViewCellStyleValue1;
         _validators = [NSMutableArray new];
         _cellConfig = [NSMutableDictionary dictionary];
+        _cellAttributes = [NSMutableDictionary dictionary];
         _cellConfigIfDisabled = [NSMutableDictionary dictionary];
         _cellConfigAtConfigure = [NSMutableDictionary dictionary];
         _isDirtyDisablePredicateCache = YES;
@@ -113,18 +115,27 @@
 {
     if (!_cell){
         id cellClass = self.cellClass ?: [XLFormViewController cellClassesForRowDescriptorTypes][self.rowType];
+        NSLog(@"now comes the cell class");
+        NSLog(@"%@", cellClass);
         NSAssert(cellClass, @"Not defined XLFormRowDescriptorType: %@", self.rowType ?: @"");
         if ([cellClass isKindOfClass:[NSString class]]) {
             NSString *cellClassString = cellClass;
             NSString *cellResource = nil;
             NSBundle *bundle = nil;
             if ([cellClassString rangeOfString:@"/"].location != NSNotFound) {
+                NSLog(@"if");
                 NSArray *components = [cellClassString componentsSeparatedByString:@"/"];
                 cellResource = [components lastObject];
+                NSLog(@"%@", cellResource);
                 NSString *folderName = [components firstObject];
+                NSLog(@"%@", folderName);
                 NSString *bundlePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:folderName];
-                bundle = [NSBundle bundleWithPath:bundlePath];
+                NSLog(@"%@", bundlePath);
+                //bundle = [NSBundle bundleWithPath:bundlePath];
+                bundle = [NSBundle bundleWithIdentifier:@"com.gathererapp.TestFramework"];
+                NSLog(@"%@", bundle);
             } else {
+                NSLog(@"else");
                 bundle = [NSBundle bundleForClass:NSClassFromString(cellClass)];
                 cellResource = cellClassString;
             }
@@ -132,6 +143,7 @@
             NSParameterAssert(cellResource != nil);
             
             if ([bundle pathForResource:cellResource ofType:@"nib"]){
+                NSLog(@"here it should get");
                 _cell = [[bundle loadNibNamed:cellResource owner:nil options:nil] firstObject];
             }
         } else {
@@ -141,6 +153,7 @@
         NSAssert([_cell isKindOfClass:[XLFormBaseCell class]], @"UITableViewCell must extend from XLFormBaseCell");
         [self configureCellAtCreationTime];
     }
+    _cell.cellAttributes = _cellAttributes;
     return _cell;
 }
 
