@@ -115,27 +115,19 @@
 {
     if (!_cell){
         id cellClass = self.cellClass ?: [XLFormViewController cellClassesForRowDescriptorTypes][self.rowType];
-        NSLog(@"now comes the cell class");
-        NSLog(@"%@", cellClass);
         NSAssert(cellClass, @"Not defined XLFormRowDescriptorType: %@", self.rowType ?: @"");
         if ([cellClass isKindOfClass:[NSString class]]) {
             NSString *cellClassString = cellClass;
             NSString *cellResource = nil;
             NSBundle *bundle = nil;
             if ([cellClassString rangeOfString:@"/"].location != NSNotFound) {
-                NSLog(@"if");
                 NSArray *components = [cellClassString componentsSeparatedByString:@"/"];
                 cellResource = [components lastObject];
-                NSLog(@"%@", cellResource);
                 NSString *folderName = [components firstObject];
-                NSLog(@"%@", folderName);
                 NSString *bundlePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:folderName];
-                NSLog(@"%@", bundlePath);
                 //bundle = [NSBundle bundleWithPath:bundlePath];
-                bundle = [NSBundle bundleWithIdentifier:@"com.gathererapp.TestFramework"];
-                NSLog(@"%@", bundle);
+                bundle = [NSBundle bundleWithIdentifier:@"com.gathererapp.gathererSDK"];
             } else {
-                NSLog(@"else");
                 bundle = [NSBundle bundleForClass:NSClassFromString(cellClass)];
                 cellResource = cellClassString;
             }
@@ -143,7 +135,6 @@
             NSParameterAssert(cellResource != nil);
             
             if ([bundle pathForResource:cellResource ofType:@"nib"]){
-                NSLog(@"here it should get");
                 _cell = [[bundle loadNibNamed:cellResource owner:nil options:nil] firstObject];
             }
         } else {
